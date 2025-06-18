@@ -12,7 +12,7 @@ class TextPreprocessor:
 
     def preprocess(self, text: str) -> str:
         for transformer in self.pipeline:
-            text = transformer.tranform(text)
+            text = transformer.transform(text)
         return text
 
     def transform_series(self, series):

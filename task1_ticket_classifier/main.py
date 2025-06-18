@@ -1,14 +1,18 @@
 import pandas as pd
+from utils.text_preprocessor import TextPreprocessor
+from features.tfidf_engineer import TfidfEngineer
+from features.length_engineer import LengthEngineer
+from features.sentiment_engineer import SentimentEngineer
+from features.feature_combiner import FeatureCombiner
 
-def load_data():
-    df = pd.read_excel("data/ai_dev_assignment_tickets_complex_1000.xls")
-    print(df.head())
-    return df
+# Load your data
+df = pd.read_excel("data/ai_dev_assignment_tickets_complex_1000.xls")
+print("data frame",df)
+# Preprocess
+tp = TextPreprocessor()
+df['clean_text'] = tp.transform_series(df['ticket_text'])
 
-if __name__ == "__main__":
-    df = load_data()
-    print("Columns:", df.columns.tolist())
-    print("\nMissing values:\n", df.isnull().sum())
-    print("\nUnique issue types:", df['issue_type'].unique())
-    print("Unique urgency levels:", df['urgency_level'].unique())
-    print("\nSample ticket text:\n", df['ticket_text'].iloc[0])
+# Feature engineering
+engineers = [TfidfEngineer(), LengthEngineer(), SentimentEngineer()]
+fc = FeatureCombiner(engineers)
+X = fc.combine(df)

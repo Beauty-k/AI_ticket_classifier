@@ -1,5 +1,5 @@
 import spacy
-from utils.text_transformer import TextTransformer
+from utils.text_transformer_interface import TextTransformer
 
 class Lemmatizer(TextTransformer):
     def __init__(self):
