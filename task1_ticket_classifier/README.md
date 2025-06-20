@@ -1,24 +1,22 @@
-<<<<<<< HEAD
-# AI_ticket_classifier
-=======
-
-**Internship Assignment – Vijayi WFH Technologies (June 2025)**
+**Internship Assignment – Vijayi WFH Technologies**  
 **Task 1: Ticket Classification and Entity Extraction**
 
-## Overview
+# Introduction
+
 This project implements a modular machine learning pipeline to:
 
 - Classify support tickets by:
-  - Issue Type (ex., Billing Problem, Product Defect)
+  - Issue Type (e.g., Billing Problem, Product Defect)
   - Urgency Level (High, Medium, Low)
 - Extract key entities from ticket text:
   - Product names
   - Dates
   - Complaint keywords
 
-  Implemented fully in Python using object-oriented programming (OOP), interface-based design, and clean coding practices.
+Implemented fully in Python using object-oriented programming (OOP), interface-based design, and clean coding practices.
 
-  ## Implementation steps:-
+
+# Implementation Steps
 
 ### 1. Data Preparation
 
@@ -27,44 +25,82 @@ This project implements a modular machine learning pipeline to:
   - Lowercased
   - Special characters removed
   - Lemmatized (using spaCy)
-- Used OOP-based preprocessing pipeline:
+- Used a custom preprocessing pipeline:
   - `Lowercaser`
   - `SpecialCharRemover`
   - `Lemmatizer`
 
-  ### 2. Feature Engineering
+### 2. Feature Engineering
 
-Three independent feature extractors:
+Three feature extractors:
 
 - `TfidfEngineer`: TF-IDF vector (top 1000 features)
 - `LengthEngineer`: Ticket length (number of characters)
 - `SentimentEngineer`: Sentiment polarity using TextBlob
 
-All combined through `FeatureCombiner`:
+All features are combined using `FeatureCombiner`.
 
 ### 3. Multi-Task Classification
 
-Two models were trained:
+Two models trained:
 
 - `issue_type_classifier.pkl` → predicts `issue_type`
 - `urgency_level_classifier.pkl` → predicts `urgency_level`
 
-Each uses `RandomForestClassifier` from `sklearn` and follows a `Classifier` interface.
+Both use `RandomForestClassifier` and implement the `Classifier` interface.
 
-Model performance is printed via `classification_report`.
+Performance metrics are printed using `classification_report`.
 
 ### 4. Entity Extraction
 
-Used rule-based NLP (no LLMs):
+Rule-based NLP methods (no LLMs used):
 
-- Extracted product names from known list
-- Extracted dates via regex
-- Extracted complaint keywords via matching
+- Product names (from list)
+- Dates (via regex)
+- Complaint keywords (from static list)
 
-Class used: `RuleBasedEntityExtractor` implementing `EntityExtractor` interface.
+Class used: `RuleBasedEntityExtractor` implementing `EntityExtractor`.
 
 ### 5. Integration
 
-Built a single class:
+All logic integrated into a single reusable class:
+
 TicketProcessor().process(text)
->>>>>>> 4bd05bd (Task1 is complete)
+This returns:-
+    {
+        "issue_type": issue_type,
+        "urgency_level": urgency_level,
+        "entities": entities
+    }
+
+
+# Project Structure
+
+- task1_ticket_classifier/
+    ─ models/                    # Saved models and vectorizer
+    ─ data/                      # Input Excel file
+    ─ components/                # Modular OOP structure
+    ─ text_transforms/           # Preprocessors
+    ─ features/                  # Feature extractors
+    ─ models/                    # Classifier implementations
+    ─ entity_extractors/         # Rule-based extractor
+    ─ inference/                 # Final integration logic
+    ─ train_models.py            # Model training
+    ─ predict_ticket.py          # Inference
+    ─ README.md 
+
+# Key Design Choices
+- Followed Object-Oriented Programming and the Single Responsibility Principle to ensure modular, testable, and 
+  extensible code.
+- Used interfaces (abstract base classes) to allow easy swapping of models, preprocessors, or feature extractors.
+- Chose Random Forest for its robustness and interpretability in multi-class classification tasks.
+- Applied traditional rule-based NLP for entity extraction — as required by the assignment.
+   
+#  Limitations 
+- The urgency level classifier is not very accurate. This is likely because the labels like High, Medium, and Low  
+  are subjective and not clearly defined in the data.
+- The entity extractor is based on simple rules. It may miss spelling mistakes or similar words. For example, it 
+  catches “broken” but not “damaged”
+- It only detects dates in numeric format like 12/06/2025. It doesn’t handle words like “yesterday” or “last week”.
+- Sentiment and length are basic features. The system could improve by using more advanced text features in the 
+  future.
