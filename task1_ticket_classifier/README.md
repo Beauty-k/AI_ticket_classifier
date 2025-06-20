@@ -96,6 +96,18 @@ This returns:-
 - Chose Random Forest for its robustness and interpretability in multi-class classification tasks.
 - Applied traditional rule-based NLP for entity extraction — as required by the assignment.
    
+# Model Evaluation
+
+## Issue Type Classifier
+- Accuracy: 94% (approx)
+- Precision/Recall/F1 (macro avg): 0.95 (approx)
+
+## Urgency Level Classifier
+- Accuracy: 31% (approx)
+- Precision/Recall/F1 (macro avg): 0.30 (approx)
+### The issue type model performs strongly.
+### Urgency classification is more subjective and imbalanced, which affects its accuracy.
+
 #  Limitations 
 - The urgency level classifier is not very accurate. This is likely because the labels like High, Medium, and Low  
   are subjective and not clearly defined in the data.
@@ -104,3 +116,39 @@ This returns:-
 - It only detects dates in numeric format like 12/06/2025. It doesn’t handle words like “yesterday” or “last week”.
 - Sentiment and length are basic features. The system could improve by using more advanced text features in the 
   future.
+
+# Instructions to Run the Code and App
+### Clone the Repository / Copy the Folder
+`git clone https://github.com/your-username/AI_ticket_classifier.git`
+`cd AI_ticket_classifier/task1_ticket_classifier`
+
+### Set Up the Environment
+Install requirements:
+`pip install -r requirements.txt`
+
+### Download spaCy model and TextBlob corpora:
+`python -m spacy download en_core_web_sm`
+`python -m textblob.download_corpora`
+
+### Train the Models
+`python train_models.py`
+This script:
+- Preprocesses the data
+- Extracts features
+- Trains two models (issue + urgency)
+- Saves them in the models/ directory
+
+### Run Predictions
+`python predict_ticket.py`
+
+### When prompted, enter a sample ticket 
+Output includes:
+- Predicted issue type
+- Predicted urgency level
+- Extracted product, dates, and complaint keywords
+
+### Run Feature Preview (Optional)
+`python feature_preview.py`
+
+# View the Demo video 
+[Click to view demo video](https://drive.google.com/file/d/1cY1EmdTInc9PttbkLhRVLCi0SwwN3e_y/view?usp=sharing)

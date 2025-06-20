@@ -1,17 +1,14 @@
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 from utils.quote_data_loader import QuoteDataLoader
-from models.quote_embedder import QuoteEmbedder
-import os
+import joblib
 
-# Create models directory if it doesn't exist
-os.makedirs("models", exist_ok=True)
-
-# Load quotes
+model = SentenceTransformer("all-MiniLM-L6-v2")
 loader = QuoteDataLoader()
 quotes = loader.load_quotes()
+embeddings = model.encode(quotes)
 
-# Encode and save
-embedder = QuoteEmbedder()
-embeddings = embedder.encode_quotes(quotes)
-embedder.save_embeddings(embeddings, quotes)
-
-print("Embeddings and quotes saved!")
+np.save("models/quote_embeddings.npy", embeddings)
+joblib.dump(quotes, "models/quotes_list.pkl")
+print(f"Quotes loaded: {len(quotes)}")

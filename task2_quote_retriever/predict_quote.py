@@ -1,16 +1,18 @@
+import joblib
+import numpy as np
+from sentence_transformers import SentenceTransformer
 from utils.quote_retriever import QuoteRetriever
 
-if __name__ == "__main__":
-    retriever = QuoteRetriever()
+quotes = joblib.load("models/quotes_list.pkl")
+embeddings = np.load("models/quote_embeddings.npy")
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
-    print("Ask for a quote! Type something like:\n")
-    print("  - 'motivation for exams'")
-    print("  - 'quote on failure'")
-    print("  - 'something positive'\n")
+retriever = QuoteRetriever(quotes, embeddings, model)
 
-    query = input("Enter your query: ")
-    top_quotes = retriever.retrieve(query, top_k=3)
+print("Ask for a quote!")
+query = input("Enter your query: ")
+results = retriever.retrieve(query)
 
-    print("\n🔍 Top Matching Quotes:")
-    for i, quote in enumerate(top_quotes, 1):
-        print(f"{i}. {quote}")
+print("Top Matching Quotes\n:")
+for i, quote in enumerate(results, 1):
+    print(f"{i}. {quote}")
